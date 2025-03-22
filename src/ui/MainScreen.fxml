@@ -19,12 +19,12 @@
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button fx:id="Main_UpdateStock" layoutX="373.0" layoutY="124.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="199.0" styleClass="create-btnMainScreen" text="Update Stock Levels">
+            <Button fx:id="Main_UpdateStock" layoutX="373.0" layoutY="124.0" mnemonicParsing="false" onAction="#loadStockMedsScreen" prefHeight="41.0" prefWidth="199.0" styleClass="create-btnMainScreen" text="Update Stock Levels">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button fx:id="Main_DeleteExpMeds" layoutX="135.0" layoutY="190.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="199.0" styleClass="create-btnMainScreen" text="Delete Expired Medicines">
+            <Button fx:id="Main_DeleteExpMeds" layoutX="135.0" layoutY="190.0" mnemonicParsing="false" onAction="#loadDelExpMedsScreen" prefHeight="41.0" prefWidth="199.0" styleClass="create-btnMainScreen" text="Delete Expired Medicines">
                <font>
                   <Font size="15.0" />
                </font>
@@ -34,13 +34,13 @@
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button fx:id="Main_GetMedsSales" layoutX="257.0" layoutY="269.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="199.0" styleClass="create-btnMainScreen" text="Get Medicine sales">
+            <Button fx:id="Main_GetMedsSales" layoutX="257.0" layoutY="269.0" mnemonicParsing="false" onAction="#loadGetMedsSalesScreen" prefHeight="41.0" prefWidth="199.0" styleClass="create-btnMainScreen" text="Get Medicine sales">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button fx:id="Main_Activitylogs" layoutX="545.0" layoutY="337.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="103.0" styleClass="create-btnMainScreen" text="Activity logs" />
-            <Button fx:id="Main_TopSellMeds" layoutX="77.0" layoutY="22.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="153.0" styleClass="create-btnMainScreen" text="Top Selling Medicines" />
+            <Button fx:id="Main_Activitylogs" layoutX="545.0" layoutY="337.0" mnemonicParsing="false" onAction="#loaduserLogsScreen" prefHeight="41.0" prefWidth="103.0" styleClass="create-btnMainScreen" text="Activity logs" />
+            <Button fx:id="Main_TopSellMeds" layoutX="77.0" layoutY="22.0" mnemonicParsing="false" onAction="#loadTopMedsSalesScreen" prefHeight="41.0" prefWidth="153.0" styleClass="create-btnMainScreen" text="Top Selling Medicines" />
          </children>
       </AnchorPane>
    </children>

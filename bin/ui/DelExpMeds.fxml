@@ -20,44 +20,45 @@
                <font>
                   <Font size="19.0" />
                </font></Text>
-            <Button fx:id="SearchMeds_BackButton" layoutX="32.0" layoutY="28.0" mnemonicParsing="false" onAction="#BackToMainScreen" prefHeight="28.0" prefWidth="63.0" styleClass="create-btn" stylesheets="@Only.css" text="BACK" />
-            <ComboBox fx:id="SearchMeds_Combobox" layoutX="133.0" layoutY="100.0" prefWidth="150.0" promptText="Search" />
+            <Button fx:id="DelMeds_BackButton" layoutX="32.0" layoutY="28.0" mnemonicParsing="false" onAction="#BackToMainScreen" prefHeight="28.0" prefWidth="63.0" styleClass="create-btn" stylesheets="@Only.css" text="BACK" />
+            <ComboBox fx:id="DelMeds_Combobox" layoutX="133.0" layoutY="100.0" prefWidth="150.0" promptText="Search" />
             <Text fill="WHITE" layoutX="61.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="head-label2" text="Description:" />
             <Text fill="WHITE" layoutX="109.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="head-label2" text="Price:" />
             <Text fill="WHITE" layoutX="423.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="head-label2" text="Stock:" />
             <Text fill="WHITE" layoutX="395.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="head-label2" text="Man Date:" />
             <Text fill="WHITE" layoutX="397.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="head-label2" text="Exp Date:" />
-            <Text fx:id="SearchMeds_Name" fill="WHITE" layoutX="168.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.80340576171875">
+            <Text fx:id="DelMeds_Name" fill="WHITE" layoutX="168.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.80340576171875">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
-            <Text fx:id="SearchMeds_Desc" fill="WHITE" layoutX="168.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.80340576171875">
+            <Text fx:id="DelMeds_Desc" fill="WHITE" layoutX="168.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.80340576171875">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
-            <Text fx:id="SearchMeds_Price" fill="WHITE" layoutX="168.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.80340576171875">
+            <Text fx:id="DelMeds_Price" fill="WHITE" layoutX="168.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.80340576171875">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
-            <Text fx:id="SearchMeds_Stock" fill="WHITE" layoutX="476.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="131.47003173828125">
+            <Text fx:id="DelMeds_Stock" fill="WHITE" layoutX="476.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="131.47003173828125">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
-            <Text fx:id="SearchMeds_ExpDate" fill="WHITE" layoutX="476.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="131.47003173828125">
+            <Text fx:id="DelMeds_ExpDate" fill="WHITE" layoutX="476.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="131.47003173828125">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
-            <Text fx:id="SearchMeds_ManDate" fill="WHITE" layoutX="476.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="131.47003173828125">
+            <Text fx:id="DelMeds_ManDate" fill="WHITE" layoutX="476.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="131.47003173828125">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
-            <Text fill="WHITE" layoutX="424.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="head-label2" text="Search a Medicine" />
+            <Text fill="WHITE" layoutX="395.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="head-label2" text="Remove Expired Medicine" />
+            <Button fx:id="DelMeds_BackButton1" layoutX="253.0" layoutY="333.0" mnemonicParsing="false" onAction="#handleRemoveButton" prefHeight="28.0" prefWidth="150.0" styleClass="create-btn" stylesheets="@Only.css" text="REMOVE MEDICINE" />
          </children>
       </AnchorPane>
    </children>

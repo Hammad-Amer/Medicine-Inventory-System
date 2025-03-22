@@ -110,4 +110,124 @@ public class DBhandler {
             return false;
         }
     }
+    
+ // Fetch expired medicines
+    public List<String> getExpiredMedicines() {
+        List<String> expiredMeds = new ArrayList<>();
+        String query = "SELECT name1 FROM Meds WHERE ExpDate < CURDATE()";
+
+
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                expiredMeds.add(rs.getString("name1"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return expiredMeds;
+    }
+
+    // Delete medicine from database
+    public void removeMedicine(String medicineName) {
+    	String query = "DELETE FROM Meds WHERE name1 = ?";
+
+        
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setString(1, medicineName);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public boolean updateMedicineStock(String medicineName, int newStock) {
+        String query = "UPDATE Meds SET stock = ? WHERE name1 = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, newStock);
+            stmt.setString(2, medicineName);
+            
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;  // Returns true if update is successful
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public int getTotalSales(String medicineName) {
+        String query = "SELECT SUM(s.bought) AS totalSales " +
+                       "FROM Sales s " +
+                       "JOIN Meds m ON s.MID = m.MID " +
+                       "WHERE m.name1 = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, medicineName);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("totalSales");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0; 
+    }
+
+    public List<String> getTopMedicinesBySales() {
+        List<String> topMeds = new ArrayList<>();
+        String query = 
+            "SELECT m.name1 " +
+            "FROM Sales s " +
+            "JOIN Meds m ON s.MID = m.MID " +
+            "GROUP BY m.MID " +
+            "ORDER BY SUM(s.bought) DESC " +
+            "LIMIT 10";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                topMeds.add(rs.getString("name1"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return topMeds;
+    }
+    
+    public boolean addLog(String logMessage) {
+        String query = "INSERT INTO Logs1 (log) VALUES (?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, logMessage);
+            int rowsInserted = stmt.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<String> getLogsDescending() {
+        List<String> logs = new ArrayList<>();
+        String query = "SELECT log FROM Logs1 ORDER BY LID DESC"; 
+
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+              
+                logs.add(rs.getString("log"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return logs;
+    }
+    
+    
+
+
 }

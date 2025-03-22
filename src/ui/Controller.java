@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -22,8 +23,22 @@ import java.util.List;
 
 import Backend.Medicine;
 
+
+
+
 public class Controller {
+	
+	 private static String user;
 	 
+	    public static String getUser() {
+	        return user;
+	    }
+
+	
+	    public static void setUser(String newUser) {
+	        user = newUser;
+	    }
+	
 	private DBhandler dbHandler = DBhandler.getInstance();
     @FXML
     private Button login_button;
@@ -46,6 +61,9 @@ public class Controller {
 
         try {
             if (dbHandler.validateUser(username, password)) {
+            	
+            	setUser(username);
+                dbHandler.addLog(user + "   Logged into the application ");
                 loadMainScreen(event);
             } else {
                 showAlert("Login Failed", "Wrong login credentials!");
@@ -112,6 +130,10 @@ public class Controller {
 		stage.setTitle("MEDICINE STORAGE SYSTEM");
 		stage.show();
 		
+        loadMedicineNames();
+        if (SearchMeds_Combobox != null) {
+            SearchMeds_Combobox.setOnAction(this::fetchMedicineDetails);
+        }
         
         ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
     }
@@ -119,6 +141,81 @@ public class Controller {
     @FXML
     private void loadAddhMedsScreen(ActionEvent event) throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/AddMeds.fxml"));
+		Parent root = loader.load();
+		
+		Scene scene = new Scene(root);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.setTitle("MEDICINE STORAGE SYSTEM");
+		stage.show();
+		
+        
+        ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
+    }
+    
+    @FXML
+    private void loadDelExpMedsScreen(ActionEvent event) throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/DelExpMeds.fxml"));
+		Parent root = loader.load();
+		
+		Scene scene = new Scene(root);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.setTitle("MEDICINE STORAGE SYSTEM");
+		stage.show();
+		
+        
+        ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
+    }
+    
+    @FXML
+    private void loadStockMedsScreen(ActionEvent event) throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UpdateMedStock.fxml"));
+		Parent root = loader.load();
+		
+		Scene scene = new Scene(root);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.setTitle("MEDICINE STORAGE SYSTEM");
+		stage.show();
+		
+        
+        ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
+    }
+    
+    @FXML
+    private void loadGetMedsSalesScreen(ActionEvent event) throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/GetMedsSales.fxml"));
+		Parent root = loader.load();
+		
+		Scene scene = new Scene(root);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.setTitle("MEDICINE STORAGE SYSTEM");
+		stage.show();
+		
+        
+        ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
+    }
+    
+    @FXML
+    private void loadTopMedsSalesScreen(ActionEvent event) throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/TopMedsSales.fxml"));
+		Parent root = loader.load();
+		
+		Scene scene = new Scene(root);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.setTitle("MEDICINE STORAGE SYSTEM");
+		stage.show();
+		
+        
+        ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
+    }
+    
+    @FXML
+    private void loaduserLogsScreen(ActionEvent event) throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Logs.fxml"));
 		Parent root = loader.load();
 		
 		Scene scene = new Scene(root);
@@ -185,6 +282,26 @@ public class Controller {
         if (SearchMeds_Combobox != null) {
             SearchMeds_Combobox.setOnAction(this::fetchMedicineDetails);
         }
+        if (DelMeds_Combobox != null) { 
+            loadExpiredMedicines();  
+            DelMeds_Combobox.setOnAction(event -> handleComboBoxSelection()); 
+        }
+        if (StcokMeds_Combobox != null) {
+            initializeStockUI();
+        }
+        
+        if (GetMedsSales_Combobox != null) {
+        	initializeSalesUI();
+        }
+        
+        if (TopMedsSales_Combobox != null) {
+            initializeTopMedsUI();
+        }
+        
+        if(LogsMeds_maintextarea != null) {
+        	 fillLogsTextArea();
+        }
+       
     }
 
     private void loadMedicineNames() {
@@ -279,6 +396,9 @@ public class Controller {
 
         boolean success = dbHandler.addMedicine(name, desc, price, stock, manDate, expDate);
         if (success) {
+        	
+    
+            dbHandler.addLog(user + "     Added medicine: " + name);
             showAlert("Success", "Medicine added successfully.");
             clearFieldsMed();
         } else {
@@ -350,7 +470,7 @@ public class Controller {
     private Button DelMeds_BackButton1;
 
     @FXML
-    private ComboBox<?> DelMeds_Combobox;
+    private ComboBox<String> DelMeds_Combobox;
 
     @FXML
     private Text DelMeds_Desc;
@@ -370,6 +490,276 @@ public class Controller {
     @FXML
     private Text DelMeds_Stock;
     
+    private void loadExpiredMedicines() {
+    	DelMeds_Combobox.getItems().setAll(dbHandler.getExpiredMedicines());
+    }
+
+    @FXML
+    private void handleRemoveButton() {
+        String selectedMedicine = DelMeds_Combobox.getValue();
+        
+        if (selectedMedicine != null) {
+            dbHandler.removeMedicine(selectedMedicine);
+            showAlert("Success", "Medicine Removed Successfully!");
+        
+            dbHandler.addLog(user + "	Deleted medicine  "+selectedMedicine);
+            loadExpiredMedicines(); 
+            clearMedicineDetails();
+        } else {
+            showAlert("Error", "Please select a medicine to remove.");
+        }
+    }
+    
+    @FXML
+    private void handleComboBoxSelection() {
+        String selectedMedicine = DelMeds_Combobox.getValue();
+        
+        if (selectedMedicine != null) {
+            Medicine med = dbHandler.getMedicineDetails(selectedMedicine);
+            if (med != null) {
+                DelMeds_Name.setText(med.getName());
+                DelMeds_Desc.setText(med.getDescription());
+                DelMeds_Price.setText(String.valueOf(med.getPrice()));
+                DelMeds_Stock.setText(String.valueOf(med.getStock()));
+                DelMeds_ManDate.setText(med.getManDate());
+                DelMeds_ExpDate.setText(med.getExpDate());
+            }
+        }
+    }
+    
+ 
+    private void clearMedicineDetails() {
+        DelMeds_Name.setText("");
+        DelMeds_Desc.setText("");
+        DelMeds_Price.setText("");
+        DelMeds_Stock.setText("");
+        DelMeds_ManDate.setText("");
+        DelMeds_ExpDate.setText("");
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+    
+    @FXML
+    private Button SearchMeds_Addbutton;
+
+    @FXML
+    private Button StockMeds_BackButton;
+
+    @FXML
+    private ComboBox<String> StcokMeds_Combobox;
+
+    @FXML
+    private TextField StcokMeds_addstock;
+
+    @FXML
+    private Text StcokMeds_currentstock;
+
+    @FXML
+    private Text StcokMeds_desciption;
+
+    @FXML
+    private Text StcokMeds_name;
+
+    @FXML
+    private Text StcokMeds_price;
+    
+    private void initializeStockUI() {
+ 
+        List<String> medicines = dbHandler.getAllMedicines();
+        StcokMeds_Combobox.getItems().setAll(medicines);
+
+        StcokMeds_Combobox.setOnAction(event -> handleStockComboBoxSelection());
+    }
+    
+    private void handleStockComboBoxSelection() {
+        String selectedMedicine = StcokMeds_Combobox.getValue();
+        if (selectedMedicine != null) {
+            Medicine med = dbHandler.getMedicineDetails(selectedMedicine);
+            if (med != null) {
+             
+                StcokMeds_name.setText(med.getName());
+                StcokMeds_desciption.setText(med.getDescription());
+                StcokMeds_price.setText(String.valueOf(med.getPrice()) + " Rs.");
+                StcokMeds_currentstock.setText(String.valueOf(med.getStock()));
+  
+                StcokMeds_addstock.clear();
+            }
+        }
+    }
+    
+    @FXML
+    private void handleAddStock(ActionEvent event) {
+    
+        String selectedMedicine = StcokMeds_Combobox.getValue();
+        if (selectedMedicine == null) {
+            showAlert("Error", "Please select a medicine first.");
+            return;
+        }
+
+  
+        String addStockText = StcokMeds_addstock.getText().trim();
+        if (addStockText.isEmpty()) {
+            showAlert("Error", "Please enter a valid number to add to stock.");
+            return;
+        }
+
+        int addStock;
+        try {
+            addStock = Integer.parseInt(addStockText);
+            if (addStock < 0) {
+                showAlert("Error", "Cannot add negative stock.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            showAlert("Error", "Stock must be a valid integer.");
+            return;
+        }
+
+     
+        String currentStockText = StcokMeds_currentstock.getText();
+        int currentStock = 0;
+        try {
+            currentStock = Integer.parseInt(currentStockText);
+        } catch (NumberFormatException e) {
+            showAlert("Error", "Current stock is invalid. Please reselect the medicine.");
+            return;
+        }
+
+      
+        int newStock = currentStock + addStock;
+
+  
+        boolean success = dbHandler.updateMedicineStock(selectedMedicine, newStock);
+        if (success) {
+            showAlert("Success", "Stock updated successfully.");
+            
+     
+            dbHandler.addLog(user + "	 Updated medicine stock ");
+            Medicine updatedMed = dbHandler.getMedicineDetails(selectedMedicine);
+            if (updatedMed != null) {
+                StcokMeds_currentstock.setText(String.valueOf(updatedMed.getStock()));
+            }
+         
+            StcokMeds_addstock.clear();
+        } else {
+            showAlert("Error", "Failed to update stock. Please try again.");
+        }
+    }
+
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    @FXML
+    private Button GetMedsSales_BackButton;
+
+    @FXML
+    private ComboBox<String> GetMedsSales_Combobox;
+
+    @FXML
+    private Text GetMedsSales_TotalSales;
+
+    @FXML
+    private Text GetMedsSales_desc;
+
+    @FXML
+    private Text GetMedsSales_names;
+
+    @FXML
+    private Text GetMedsSales_price;
+
+    
+    private void initializeSalesUI() {
+        if (GetMedsSales_Combobox != null) {
+            List<String> medicines = dbHandler.getAllMedicines();
+            GetMedsSales_Combobox.getItems().setAll(medicines);
+            GetMedsSales_Combobox.setOnAction(event -> handleSalesComboBoxSelection());
+        }
+    }
+
+    private void handleSalesComboBoxSelection() {
+        String selectedMedicine = GetMedsSales_Combobox.getValue();
+        if (selectedMedicine != null) {
+            Medicine med = dbHandler.getMedicineDetails(selectedMedicine);
+            int totalSales = dbHandler.getTotalSales(selectedMedicine);
+            if (med != null) {
+                GetMedsSales_names.setText(med.getName());
+                GetMedsSales_desc.setText(med.getDescription());
+                GetMedsSales_price.setText(String.valueOf(med.getPrice()) + " Rs.");
+                GetMedsSales_TotalSales.setText(String.valueOf(totalSales));
+            }
+        }
+    }
     
     
+    //////////////////////////////////////////////////////////////////
+    
+    @FXML
+    private Button TopMedsSales_BackButton;
+
+    @FXML
+    private ComboBox<String> TopMedsSales_Combobox;
+
+    @FXML
+    private Text TopMedsSales_TotalSales;
+
+    @FXML
+    private Text TopMedsSales_desc;
+
+    @FXML
+    private Text TopMedsSales_names;
+
+    @FXML
+    private Text TopMedsSales_price;
+
+    private void initializeTopMedsUI() {
+       
+        List<String> topMeds = dbHandler.getTopMedicinesBySales();
+        
+        
+        TopMedsSales_Combobox.getItems().setAll(topMeds);
+
+      
+        TopMedsSales_Combobox.setOnAction(event -> handleTopMedsComboBoxSelection());
+    }
+
+    private void handleTopMedsComboBoxSelection() {
+        String selectedMedicine = TopMedsSales_Combobox.getValue();
+        if (selectedMedicine != null) {
+          
+            Medicine med = dbHandler.getMedicineDetails(selectedMedicine);
+        
+            int totalSales = dbHandler.getTotalSales(selectedMedicine);
+
+            if (med != null) {
+              
+                TopMedsSales_names.setText(med.getName());
+                TopMedsSales_desc.setText(med.getDescription());
+                TopMedsSales_price.setText(med.getPrice() + " Rs.");
+                TopMedsSales_TotalSales.setText(String.valueOf(totalSales));
+            }
+        }
+    }
+
+    /////////////////////////////////////////////////////////
+    
+    @FXML
+    private Button LogsMeds_BackButton;
+
+    @FXML
+    private TextArea LogsMeds_maintextarea;
+
+
+  
+    private void fillLogsTextArea() {
+        List<String> logsList = dbHandler.getLogsDescending();
+        StringBuilder sb = new StringBuilder();
+
+        for (String log : logsList) {
+            sb.append(log).append("\n");
+        }
+
+        LogsMeds_maintextarea.setText(sb.toString());
+    }
+
+
 }

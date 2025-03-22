@@ -58,7 +58,7 @@
                </font>
             </Text>
             <Text fill="WHITE" layoutX="395.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="head-label2" text="Remove Expired Medicine" />
-            <Button fx:id="DelMeds_BackButton1" layoutX="253.0" layoutY="333.0" mnemonicParsing="false" onAction="#BackToMainScreen" prefHeight="28.0" prefWidth="150.0" styleClass="create-btn" stylesheets="@Only.css" text="REMOVE MEDICINE" />
+            <Button fx:id="DelMeds_BackButton1" layoutX="253.0" layoutY="333.0" mnemonicParsing="false" onAction="#handleRemoveButton" prefHeight="28.0" prefWidth="150.0" styleClass="create-btn" stylesheets="@Only.css" text="REMOVE MEDICINE" />
          </children>
       </AnchorPane>
    </children>
